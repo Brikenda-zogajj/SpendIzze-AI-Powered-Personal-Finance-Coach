@@ -5,8 +5,7 @@ import TransactionList from "./transactions/TransactionList";
 import TransactionModal from "./transactions/TransactionModal";
 import CategoryManager from "./categories/CategoryManager";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus } from "lucide-react";
-import FinanceAIChat from "./chat/FinanceAIChat";
+import { LogOut, Plus, MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface HomeProps {
@@ -34,10 +33,19 @@ const Home = ({
       <header className="bg-white border-b p-4">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold">Financial Dashboard</h1>
-          <Button variant="ghost" onClick={handleLogout}>
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
-          </Button>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              onClick={() => navigate("/dashboard/assistant")}
+            >
+              <MessageSquare className="w-4 h-4 mr-2" />
+              Financial Assistant
+            </Button>
+            <Button variant="ghost" onClick={handleLogout}>
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -50,7 +58,7 @@ const Home = ({
         />
 
         {/* Main Content Grid */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Spending Chart */}
           <div>
             <SpendingDonutChart />
@@ -76,11 +84,6 @@ const Home = ({
                 // Handle delete
               }}
             />
-          </div>
-
-          {/* AI Chat Column */}
-          <div>
-            <FinanceAIChat />
           </div>
         </div>
 

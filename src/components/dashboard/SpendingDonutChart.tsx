@@ -31,15 +31,15 @@ const SpendingDonutChart = ({
   categories = defaultCategories,
   totalSpending = categories.reduce((sum, cat) => sum + cat.amount, 0),
 }: Props) => {
-  const radius = 150;
-  const strokeWidth = 40;
+  const radius = 80;
+  const strokeWidth = 30;
   const center = radius + strokeWidth;
   const circumference = 2 * Math.PI * radius;
 
   let currentOffset = 0;
 
   return (
-    <Card className="p-6 w-[400px] h-[400px] bg-white">
+    <Card className="p-6 bg-white h-full">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold flex items-center gap-2">
           <PieChart className="h-5 w-5" />
@@ -59,55 +59,58 @@ const SpendingDonutChart = ({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="relative w-full h-[300px] flex justify-center">
-        <svg
-          width={center * 2}
-          height={center * 2}
-          className="transform -rotate-90"
-        >
-          {categories.map((category, index) => {
-            const percentage = category.amount / totalSpending;
-            const strokeDasharray = circumference;
-            const strokeDashoffset = circumference * (1 - percentage);
-            const offset = currentOffset;
-            currentOffset += percentage * circumference;
 
-            return (
-              <circle
-                key={index}
-                r={radius}
-                cx={center}
-                cy={center}
-                fill="none"
-                stroke={category.color}
-                strokeWidth={strokeWidth}
-                strokeDasharray={strokeDasharray}
-                strokeDashoffset={strokeDashoffset}
-                style={{
-                  transform: `rotate(${offset}px)`,
-                  transformOrigin: "center",
-                  transition: "stroke-dashoffset 0.5s ease",
-                }}
+      <div className="flex flex-col items-center gap-6">
+        <div className="relative w-[220px] h-[220px]">
+          <svg
+            width={center * 2}
+            height={center * 2}
+            className="transform -rotate-90"
+          >
+            {categories.map((category, index) => {
+              const percentage = category.amount / totalSpending;
+              const strokeDasharray = circumference;
+              const strokeDashoffset = circumference * (1 - percentage);
+              const offset = currentOffset;
+              currentOffset += percentage * circumference;
+
+              return (
+                <circle
+                  key={index}
+                  r={radius}
+                  cx={center}
+                  cy={center}
+                  fill="none"
+                  stroke={category.color}
+                  strokeWidth={strokeWidth}
+                  strokeDasharray={strokeDasharray}
+                  strokeDashoffset={strokeDashoffset}
+                  style={{
+                    transform: `rotate(${offset}px)`,
+                    transformOrigin: "center",
+                    transition: "stroke-dashoffset 0.5s ease",
+                  }}
+                />
+              );
+            })}
+          </svg>
+        </div>
+
+        <div className="w-full grid grid-cols-2 gap-2">
+          {categories.map((category, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <div
+                className="w-3 h-3 rounded-full flex-shrink-0"
+                style={{ backgroundColor: category.color }}
               />
-            );
-          })}
-        </svg>
+              <span className="text-sm truncate">{category.name}</span>
+              <span className="text-sm text-muted-foreground ml-auto">
+                ${category.amount}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="grid grid-cols-2 gap-2 mt-4">
-        {categories.map((category, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: category.color }}
-            />
-            <span className="text-sm">{category.name}</span>
-            <span className="text-sm text-muted-foreground ml-auto">
-              ${category.amount}
-            </span>
-          </div>
-        ))}
-      </div>
-      <div className="w-[800px] h-[600px]"></div>
     </Card>
   );
 };
