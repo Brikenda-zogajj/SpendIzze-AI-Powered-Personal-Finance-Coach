@@ -4,8 +4,12 @@ import SpendingDonutChart from "./dashboard/SpendingDonutChart";
 import TransactionList from "./transactions/TransactionList";
 import TransactionModal from "./transactions/TransactionModal";
 import CategoryManager from "./categories/CategoryManager";
+import SmartAlerts from "./alerts/SmartAlerts";
+import CommunityGoals from "./goals/CommunityGoals";
+import EcoFinanceCard from "./eco/EcoFinanceCard";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus, MessageSquare } from "lucide-react";
+import { Plus, MessageSquare } from "lucide-react";
+import ProfileButton from "./profile/ProfileButton";
 import { useNavigate } from "react-router-dom";
 
 interface HomeProps {
@@ -41,10 +45,7 @@ const Home = ({
               <MessageSquare className="w-4 h-4 mr-2" />
               Financial Assistant
             </Button>
-            <Button variant="ghost" onClick={handleLogout}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
+            <ProfileButton onLogout={handleLogout} />
           </div>
         </div>
       </header>
@@ -58,14 +59,21 @@ const Home = ({
         />
 
         {/* Main Content Grid */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Spending Chart */}
-          <div>
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left Column - Charts and Insights */}
+          <div className="lg:col-span-4 space-y-8">
             <SpendingDonutChart />
+            <SmartAlerts
+              onActionClick={(alertId) => {
+                // Handle alert actions
+                console.log("Alert clicked:", alertId);
+              }}
+            />
+            <EcoFinanceCard />
           </div>
 
-          {/* Right Column - Transaction List */}
-          <div className="lg:col-span-2">
+          {/* Middle Column - Transactions */}
+          <div className="lg:col-span-5">
             <div className="mb-4 flex justify-between gap-4">
               <Button
                 onClick={() => setShowCategoryManager(true)}
@@ -82,6 +90,16 @@ const Home = ({
               onEdit={() => setShowTransactionModal(true)}
               onDelete={() => {
                 // Handle delete
+              }}
+            />
+          </div>
+
+          {/* Right Column - Community Goals */}
+          <div className="lg:col-span-3">
+            <CommunityGoals
+              onJoinGoal={(goalId) => {
+                // Handle goal join
+                console.log("Goal joined:", goalId);
               }}
             />
           </div>

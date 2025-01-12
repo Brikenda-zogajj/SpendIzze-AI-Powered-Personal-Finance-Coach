@@ -4,6 +4,8 @@ import Home from "./components/home";
 import LoginForm from "./components/auth/LoginForm";
 import SignupForm from "./components/auth/SignupForm";
 import AuthLayout from "./components/auth/AuthLayout";
+import FinanceAIPage from "./components/chat/FinanceAIPage";
+import SettingsPage from "./components/settings/SettingsPage";
 import { Toaster } from "@/components/ui/toaster";
 import routes from "tempo-routes";
 
@@ -35,10 +37,26 @@ function App() {
             element={<SignupForm onSignup={handleSignup} />}
           />
           <Route
-            path="/dashboard/*"
+            path="/dashboard"
             element={
               <AuthLayout isAuthenticated={isAuthenticated}>
                 <Home />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="/dashboard/assistant"
+            element={
+              <AuthLayout isAuthenticated={isAuthenticated}>
+                <FinanceAIPage />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="/dashboard/settings"
+            element={
+              <AuthLayout isAuthenticated={isAuthenticated}>
+                <SettingsPage />
               </AuthLayout>
             }
           />
